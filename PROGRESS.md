@@ -4,17 +4,24 @@
 > anything. Update it at every save point. Replace content — do not append.
 > History lives in git.
 
-**Session:** 0 — build not started
-**Last updated:** 20 November 2026 — by Project Governor, pre-build
+**Session:** 1
+**Last updated:** 20 November 2026 — session 1
 **Live URL:** none yet [Rule: fill in after the first successful deploy]
 **First deploy:** not yet [Rule: the date the first pull request was merged with all builder checks passing; a record only]
 **Stage:** business logic [Rule: one of — business logic and database / second screen and access design / login and access rules together / deploy and maintain. Advance it when that stage's items are absorbed into Current state. Decided by what exists, never by a week or a version number.]
 
 ## Plan for this session
-None yet. [Rule: Claude Code opens in plan mode, states the lane (fix / change), proposes the plan, and writes the approved plan here (3–8 lines: what changes, in what order, which rows of docs/checks.md prove it). Replaced each session. A change whose spec version has not moved is not planned here; it goes to the Tool Architect.]
+Session 1 (fix lane — build what spec v1.0 says), approved 20 November 2026:
+1. First Session Setup (docs/, netlify.toml, brand skill check) — D12
+2. Convert the Excel into src/data/roadmap.json — D1
+3. Scaffold React + Vite + Tailwind + Recharts with brand tokens
+4. Calculation module (filter, split, merge, Actual/Target/Gap, Reductions, segments) — D2–D11 via a script
+5. Roadmap screen — S1–S6 checked with screenshots
+6. Checks + verifier, results recorded; then Netlify connect, pull request, builder checks, merge
+[Rule: Claude Code opens in plan mode, states the lane (fix / change), proposes the plan, and writes the approved plan here (3–8 lines). Replaced each session. A change whose spec version has not moved is not planned here; it goes to the Tool Architect.]
 
 ## Current state
-Nothing built. Repo contains CLAUDE.md, PROGRESS.md, product-spec.md, intent.md, checks.md, .claude/settings.json, docs/source/GHG_reduction_roadmap.xlsx (source data), and the-company-brand skill (already installed at .claude/skills/the-company-brand/).
+First Session Setup done: docs/ holds product-spec.md, intent.md, checks.md and source/GHG_reduction_roadmap.xlsx; netlify.toml (npm run build → dist); brand skill at .claude/skills/the-company-brand/. No app code yet.
 [Rule: this section describes what exists and works right now — never what is planned. Completed checklist items get absorbed here in compressed form.]
 
 ## Last session
@@ -22,7 +29,6 @@ None — the first build session has not happened yet.
 [Rule: 3–5 lines maximum. Replace each session — what was built, changed, or fixed.]
 
 ## Remaining work
-- [ ] First Session Setup: create docs/, move the spec, intent.md and checks.md into it and check each is there, confirm the brand skill is in place, write netlify.toml for the stack, commit and push (see CLAUDE.md Session Protocol)
 - [ ] Convert docs/source/GHG_reduction_roadmap.xlsx into src/data/roadmap.json (settings + 4 base rows + 14 measure rows; Actual/Gap/Target rows not imported; spec Section 5) and note how in docs/ — then run check D1
 - [ ] Build Roadmap — the waterfall with filters, the three toggles, legend, tooltips and summary line (spec Sections 8–9) — then run its rows in docs/checks.md and the verifier
 - [ ] Checks pass for this stage — every row in docs/checks.md shows a pass dated today; the verifier's report pasted under Check results
