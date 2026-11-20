@@ -30,12 +30,12 @@ v2.0 (session 3, on branch claude/tender-lamport-z8q2ma, not yet merged): Supaba
 [Rule: this section describes what exists and works right now — never what is planned. Completed checklist items get absorbed here in compressed form.]
 
 ## Last session
-Session 2: change lane v1.2 — Tool Architect (Iteration Mode) and Governor; updated Excel re-converted; span columns for Up/Downsizing, Energy Efficiency and (on builder request) Green Tariffs; TARGET REDUCTION slider 0 to −99 %. Verifier and builder checks all pass; pull request #3 ready to merge. Live URL recorded.
+Session 3: change lane v2.0 — Tool Architect (Iteration Mode), Access Architect (short run, P1), Governor; built Supabase (tables, RLS, Save/Undo functions, seed), three Netlify Functions, live chart, Adjust measures panel, Undo, About page. All checks pass (Claude Code, verifier, builder); reviewer "Safe to merge". Pull request #4 ready to merge; data reset to the seed.
 [Rule: 3–5 lines maximum. Replace each session — what was built, changed, or fixed.]
 
 ## Remaining work
-- [ ] (v2.0 revision) Checks pass for v2.0 — every row in docs/checks.md shows a pass dated in this session; the verifier's report pasted under Check results
-- [ ] (v2.0 revision) Push the branch (confirmed); Claude Code opens the pull request; the builder's checks on the Deploy Preview as a numbered list; data reset to the state the builder wants; the reviewer passes the branch; the builder merges and deletes the branch → main deploys. Claude Code never merges.
+- [ ] (v2.0 revision) Builder: merge pull request #4 and delete the branch → main deploys v2.0. Claude Code never merges.
+- [ ] Builder (optional): switch Netlify deploy preview protection back on (Site configuration → Access & security → Visitor access)
 - [ ] (v2.0 revision) Builder: switch the Supabase project to Pro in the dashboard (manual billing step) before the link is shared beyond your own testing; Free has no backups and pauses when idle
 [Rule: completed items leave this list and are absorbed into Current state. This list only shrinks.]
 
@@ -66,7 +66,7 @@ Session 2: change lane v1.2 — Tool Architect (Iteration Mode) and Governor; up
 - Database now: 18 visible rows (73,700 t), 2 hidden test rows (Test Measure, Supplier engagement), 8 save snapshots — to be reset after the builder's checks.
 - Reviewer (20 Nov 2026): "Safe to merge", no blockers. Findings handled: R1 run as real attempts in the database as the anon and authenticated roles (select on both tables and the Undo function: all refused, rolled back); .env lines added to .gitignore; the names-only 503 diagnostic kept (shows no value; only appears while the site is misconfigured). Open: confirm in docs/supabase-setup.md §1/§8 the key kind the extension wrote (sb_ or eyJ) — asked of the builder; builder rows S2–S5, S10–S15 on the preview; data reset.
 - Builder rows S1–S15, S17: all PASS 2026-11-20 on the Deploy Preview of pull request #4 (builder: "all pass").
-- Pending: final data reset to the seed.
+- Data reset 20 Nov 2026 (builder chose the seed): roadmap_rows = the 18 seed rows (73,700 t), roadmap_saves empty; the state before the reset was exported to a file outside the repo (session scratchpad).
 [Rule: the verifier's report per phase and per branch, with the date: one line per row, PASS or FAIL, and the builder's rows as performed. Kept, never cleared; the handover package copies it. A FAIL is fixed in the tool and re-run, never edited away.]
 
 ## Build decisions
