@@ -9,10 +9,17 @@
 **Live URL:** https://ghgreductionroadmap.netlify.app/ [Rule: fill in after the first successful deploy]
 **First deploy:** 20 November 2026 [Rule: the date the first pull request was merged with all builder checks passing; a record only]
 **Stage:** business logic and database [Rule: one of — business logic and database / second screen and access design / login and access rules together / deploy and maintain. Advance it when that stage's items are absorbed into Current state. Decided by what exists, never by a week or a version number.]
-**Supabase project:** not yet created — confirm the name "the-company-sustainability" and create it in the build session [Rule: the only place project existence is recorded; CLAUDE.md never carries it]
+**Supabase project:** created — ref stxgjibxcmznnpjqpedt, URL https://stxgjibxcmznnpjqpedt.supabase.co (EU Frankfurt, Free) [Rule: the only place project existence is recorded; CLAUDE.md never carries it]
 
 ## Plan for this session
-None yet — the v2.0 build session proposes one.
+Session 3 (change lane — build spec v2.0), approved 20 November 2026:
+1. Create Supabase project the-company-sustainability (EU Frankfurt, Free) in kirtanb-maker's Org
+2. Tables, RLS (no anon access), Save/Undo database functions, seed 18 rows, fixture, docs/supabase-setup.md — D1, R1
+3. Netlify Functions roadmap / save-roadmap / undo-save with limits and validation; netlify.toml functions — D15–D25, R2
+4. Chart reads from the roadmap function; single_column per row; loading/failure; footer — D2–D14, S1–S8, S16
+5. Adjust measures panel with live preview, Save/Cancel, Delete, Undo — S9–S15
+6. About this tool — S17
+7. All checks, verifier, push, pull request; builder connects the Supabase extension; builder checks; reviewer; builder merges
 [Rule: Claude Code opens in plan mode, states the lane (fix / change), proposes the plan, and writes the approved plan here (3–8 lines). Replaced each session. A change whose spec version has not moved is not planned here; it goes to the Tool Architect.]
 
 ## Current state
