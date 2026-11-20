@@ -1,7 +1,7 @@
 // GET /.netlify/functions/roadmap — the visible roadmap rows, whether Undo is
 // available and when the last Save happened. Never returns a hidden row or a snapshot.
 // Rule: docs/access-matrix.md §6 line 2.
-import { rest, json, fail, fromDb, logError, ConfigError } from '../lib/supabase.mjs';
+import { rest, json, fail, fromDb, logError, ConfigError, configReport } from '../lib/supabase.mjs';
 
 const COLUMNS = 'id,row_type,name,start_year,end_year,value_t,scope,scope3_category,business,status,single_column,sort_order';
 
@@ -24,6 +24,6 @@ export default async (req) => {
     });
   } catch (err) {
     logError('roadmap', err);
-    return fail(err instanceof ConfigError ? 503 : 502, 'Roadmap data could not be loaded.');
+    return err instanceof ConfigError ? fail(503, 'Roadmap data could not be loaded.', configReport()) : fail(502, 'Roadmap data could not be loaded.');
   }
 };

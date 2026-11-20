@@ -1,6 +1,6 @@
 // POST /.netlify/functions/undo-save — undo the newest Save that has not been undone,
 // once. Rule: docs/access-matrix.md §6 line 4.
-import { rpc, json, fail, logError, ConfigError } from '../lib/supabase.mjs';
+import { rpc, json, fail, logError, ConfigError, configReport } from '../lib/supabase.mjs';
 
 export default async (req) => {
   if (req.method !== 'POST') return fail(405, 'Method not allowed.');
@@ -14,6 +14,6 @@ export default async (req) => {
     return json(200, { undoneSaveId: res.data.undone_save_id, savedAt: res.data.saved_at });
   } catch (err) {
     logError('undo-save', err);
-    return fail(err instanceof ConfigError ? 503 : 502, 'Could not undo. Nothing was changed.');
+    return err instanceof ConfigError ? fail(503, 'Could not undo. Nothing was changed.', configReport()) : fail(502, 'Could not undo. Nothing was changed.');
   }
 };

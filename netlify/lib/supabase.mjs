@@ -36,7 +36,22 @@ export function json(status, body) {
   });
 }
 
-export const fail = (status, error) => json(status, { error });
+export const fail = (status, error, extra) => json(status, { error, ...(extra || {}) });
+
+/** Names only, never values: which Supabase variables this deploy can see. */
+export function configReport() {
+  const u = (process.env.SUPABASE_DATABASE_URL || process.env.SUPABASE_URL || '').trim();
+  const k = (process.env.SUPABASE_SERVICE_ROLE_KEY || '').trim();
+  return {
+    config: {
+      SUPABASE_DATABASE_URL: !!process.env.SUPABASE_DATABASE_URL,
+      SUPABASE_URL: !!process.env.SUPABASE_URL,
+      SUPABASE_SERVICE_ROLE_KEY: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
+      urlKind: !u ? 'missing' : u.startsWith('https://') ? 'https' : u.startsWith('postgres') ? 'postgres-connection-string' : 'other',
+      keyKind: !k ? 'missing' : k.startsWith('sb_secret_') ? 'secret (sb_)' : k.startsWith('eyJ') ? 'legacy (eyJ)' : 'other',
+    },
+  };
+}
 
 /** Database row → the app's row shape. */
 export function fromDb(r) {

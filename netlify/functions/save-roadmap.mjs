@@ -3,7 +3,7 @@
 // (docs/access-matrix.md §6 line 3): size limits, every field validated, then one
 // database call that snapshots, applies and records the Save.
 import { LIMITS, validateSave } from '../../src/lib/validate.js';
-import { rpc, json, fail, toDb, logError, ConfigError } from '../lib/supabase.mjs';
+import { rpc, json, fail, toDb, logError, ConfigError, configReport } from '../lib/supabase.mjs';
 
 const NOTHING = ' Nothing was saved.';
 const DB_MESSAGES = {
@@ -40,6 +40,6 @@ export default async (req) => {
     return json(200, { savedAt: res.data.saved_at, createdIds: res.data.created_ids });
   } catch (err) {
     logError('save-roadmap', err);
-    return fail(err instanceof ConfigError ? 503 : 502, `Could not save.${NOTHING}`);
+    return err instanceof ConfigError ? fail(503, `Could not save.${NOTHING}`, configReport()) : fail(502, `Could not save.${NOTHING}`);
   }
 };
