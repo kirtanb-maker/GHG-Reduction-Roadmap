@@ -436,7 +436,7 @@ The Project Governor writes this section out as `docs/checks.md`. For this D1 to
 
 | Question | Who answers it | Blocking? |
 |----------|---------------|-----------|
-| The brand skill describes The Company's tools as internal (non-public). This tool is a public link with no login, so anyone who has the URL can see the emission figures. Is that acceptable for these numbers? If not, a login goes on in a later iteration (Tier 3, see Section 12). | Builder (with The Company's sustainability lead) | No — fine for the MVP while the link is shared only internally |
+| The brand skill describes The Company's tools as internal (non-public). This tool is a public link with no login, so anyone who has the URL can see the emission figures. Is that acceptable for these numbers? If not, a login goes on in a later iteration (Tier 3, see Section 12). | Builder — answered 20 November 2026: accepted for the MVP | No — resolved for now; revisit before sharing beyond the team |
 | The Excel lists measure values per year range but no Scope 3 data yet. When Scope 3 arrives, which Scope 3 categories (GHG Protocol 1–15) will be used, and will they come in the same Excel format? | Builder | No |
 | Is "Actual 2025" always the last year of done measures, or will the actual year move forward each year (e.g. 2026)? The data file carries it as a setting so it can be changed. | Builder | No |
 
