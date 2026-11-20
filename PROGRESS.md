@@ -31,7 +31,6 @@ None — the first build session has not happened yet.
 [Rule: 3–5 lines maximum. Replace each session — what was built, changed, or fixed.]
 
 ## Remaining work
-- [ ] Checks pass for this stage — every row in docs/checks.md shows a pass dated today; the verifier's report pasted under Check results
 - [ ] First build only, before the pull request: the builder connects the repo to a Netlify site (Add new project → Import an existing project → GitHub → this repo; Branch to deploy: main)
 - [ ] Push the branch and confirm it reached GitHub; open the pull request (or give the builder the prefilled compare link) and give the builder its link
 - [ ] Builder checks: on request, the builder rows of docs/checks.md as a numbered list of actions; record the results; fix failures in this session
@@ -39,7 +38,11 @@ None — the first build session has not happened yet.
 [Rule: completed items leave this list and are absorbed into Current state. This list only shrinks.]
 
 ## Check results
-None yet. [Rule: the verifier's report per phase and per branch, with the date: one line per row, PASS or FAIL, and the builder's rows as performed. Kept, never cleared; the handover package copies it. A FAIL is fixed in the tool and re-run, never edited away.]
+2026-11-20, session 1, branch claude/practical-gauss-t8820h — verifier report (fresh context), verdict "Phase ready for the builder's checks":
+- D1–D12 PASS (D1 field-by-field vs Excel; D2–D11 also matched an independent calculator over 30 filter/stack combinations, incl. Scope 2 + Stores gap = 0 → "Target reached"; D12 netlify.toml + build OK)
+- S1 PASS (1440 px preview, brand fonts/colours, defaults, no console errors) · S6 PASS (iPhone 13 and 375 px: page = viewport, chart scrolls in its frame)
+- S2–S5: builder rows, pending on the Deploy Preview · Refusal checks: not applicable · Secrets scan: clean
+- Finding fixed: doubled pipe in docs/checks.md Last result cells. [Rule: the verifier's report per phase and per branch, with the date: one line per row, PASS or FAIL, and the builder's rows as performed. Kept, never cleared; the handover package copies it. A FAIL is fixed in the tool and re-run, never edited away.]
 
 ## Build decisions
 - Chart drawn as hand-written SVG instead of Recharts (spec allows an equivalent): exact floating stacked steps, year band and "Target reached" marker; Recharts not installed.
