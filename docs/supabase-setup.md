@@ -9,7 +9,7 @@ Last updated: 20 November 2026 — session 3
 - Region: eu-central-1 (EU, Frankfurt)
 - Plan: Free (build and test; no backups; pauses after ~1 week idle). Switch to Pro before the link is shared beyond the builder's testing.
 - Organisation: kirtanb-maker's Org (the builder's own account). The org also holds "kirtanb-maker's Project" (not used by this tool; never touched).
-- Key system: publishable / secret (`sb_…`) expected; the values are written into Netlify by the Supabase extension and checked once by the builder.
+- Key system: **legacy (anon / service_role JWT, `eyJ…`)** — the Supabase extension wrote the legacy keys (checked by the builder 20 Nov 2026). They work; rotating to the publishable / secret keys (`sb_…`) is a dated handover item: before the legacy keys are retired (end of 2026). The functions send the legacy key as `apikey` plus `Authorization: Bearer`.
 
 ## 2. Tables
 **roadmap_rows** — one row = one base-year emission line or one measure.
@@ -64,7 +64,7 @@ None yet — nobody logs in.
 - `SUPABASE_DATABASE_URL` — Netlify Functions — project API URL
 - `SUPABASE_SERVICE_ROLE_KEY` — Netlify Functions — secret key
 - `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` — written by the extension, not read by this tool
-To verify on the first live build: the names the extension actually writes.
+Confirmed on the first live build (20 Nov 2026): the functions find the project URL and the service-role key the extension wrote and read the live database (Deploy Preview of pull request #4); the key values start with `eyJ` (legacy).
 
 ## 9. Notes and flags
 - **Restore a hidden row:** Supabase dashboard → Table Editor → roadmap_rows → clear `deleted_at` on the row. Or ask Claude Code.
