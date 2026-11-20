@@ -2,11 +2,12 @@ import { useEffect, useMemo, useState } from 'react';
 import data from './data/roadmap.json';
 import { computeRoadmap, listBusinesses, listScope3Categories, SCOPES } from './lib/roadmap.js';
 import { UNSTACKED, segmentPalette } from './lib/colors.js';
-import { fmt } from './lib/format.js';
+import { DISPLAY_UNIT, fmt, fmtPct } from './lib/format.js';
 import WaterfallChart from './components/WaterfallChart.jsx';
 
 const VERSION = 'v1.0';
-const { baseYear, targetYear, unit } = data.settings;
+const { baseYear, targetYear } = data.settings;
+const unit = DISPLAY_UNIT;
 const BUSINESSES = listBusinesses(data);
 const S3_CATEGORIES = listScope3Categories(data);
 const HAS_SCOPE3 = data.rows.some((r) => r.scope === 3);
@@ -97,6 +98,8 @@ export default function App() {
   }, [result.warnings]);
 
   const s = result.summary;
+  // Share of the base year; reductions negative, increases positive.
+  const pct = (v) => (s && s.base ? fmtPct(v / s.base) : '–');
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10">
@@ -157,12 +160,26 @@ export default function App() {
             <div className="mb-3"><Legend stackBy={stackBy} segmentKeys={result.segmentKeys} /></div>
             <WaterfallChart result={result} stackBy={stackBy} businesses={BUSINESSES} unit={unit} />
             <dl className="mt-4 grid grid-cols-2 gap-3 border-t border-panel pt-4 sm:grid-cols-4" data-testid="summary">
-              <div><dt className="label">Base {baseYear}</dt><dd className="font-display text-xl">{fmt(s.base)}</dd></div>
-              <div><dt className="label">Actual {data.settings.actualYear}</dt><dd className="font-display text-xl">{fmt(s.actual)}</dd></div>
-              <div><dt className="label">Target {targetYear}</dt><dd className="font-display text-xl">{fmt(s.target)}</dd></div>
+              <div>
+                <dt className="label">Base {baseYear}</dt>
+                <dd className="font-display text-xl">{fmt(s.base)} <span className="font-sans text-sm text-muted">kt</span></dd>
+              </div>
+              <div>
+                <dt className="label">Actual {data.settings.actualYear}</dt>
+                <dd className="font-display text-xl">{fmt(s.actual)} <span className="font-sans text-sm text-muted">kt</span></dd>
+                <dd className="text-sm" data-testid="pct-actual">{pct(s.reductions)} vs. base</dd>
+              </div>
+              <div>
+                <dt className="label">Target {targetYear}</dt>
+                <dd className="font-display text-xl">{fmt(s.target)} <span className="font-sans text-sm text-muted">kt</span></dd>
+                <dd className="text-sm" data-testid="pct-target">{pct(s.target - s.base)} vs. base</dd>
+              </div>
               <div>
                 <dt className="label">{s.gap > 0 ? 'Gap' : 'Target reached'}</dt>
-                <dd className="font-display text-xl">{s.gap > 0 ? fmt(s.gap) : `${fmt(-s.gap)} beyond`}</dd>
+                <dd className="font-display text-xl">
+                  {s.gap > 0 ? fmt(s.gap) : `${fmt(-s.gap)}`} <span className="font-sans text-sm text-muted">kt{s.gap > 0 ? '' : ' beyond target'}</span>
+                </dd>
+                <dd className="text-sm" data-testid="pct-gap">{pct(-Math.abs(s.gap))} vs. base</dd>
               </div>
             </dl>
           </>

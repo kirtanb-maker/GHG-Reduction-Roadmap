@@ -51,10 +51,12 @@ None — the first build session has not happened yet.
 - Dashed connectors join each bar to the next at the running total.
 - Planned Scope 3 / Manufacturing shade #FDE3A6, planned Stores shade #FBCCD3 (lighter steps of the brand accents).
 - A "Scroll sideways to see the whole roadmap →" hint appears when the chart is wider than its frame.
+- Builder request 20 Nov 2026 (fix lane, UI polish): numbers shown in kt CO2 with one decimal (axis ticks without decimals); data and calculations stay in tonnes. Summary line adds % vs. base: Actual = Reductions/Base, Target = (Target−Base)/Base, Gap = −Gap/Base (when target reached: −beyond/Base); reductions negative, increases positive.
 - Excel conversion is a Python script (scripts/convert_excel.py, needs openpyxl); documented in docs/data-conversion.md.
 [Rule: one line per decision made during the build that is not in the spec — prompt structures, field formats, naming choices, library picks. Future sessions depend on these to stay consistent.]
 
 ## Known issues
+- Spec v1.0 Section 9 says "round to whole tonnes"; the screen now shows kt (builder request). Update the spec wording at the next spec revision.
 - Data checks run against src/data/roadmap.json (the real dataset), not src/fixtures/ — this tool has no database, so its built-in data is the known input.
 [Rule: bugs, edge cases, and deferred fixes. One line each. Remove when resolved.]
 

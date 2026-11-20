@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { fillFor } from '../lib/colors.js';
-import { fmt, fmtStep } from '../lib/format.js';
+import { fmt, fmtAxis, fmtStep } from '../lib/format.js';
 
 const SLOT = 32; // minimum px per bar; below that the chart scrolls inside its frame
 const M = { top: 34, right: 8, bottom: 196, left: 58 };
@@ -72,7 +72,7 @@ export default function WaterfallChart({ result, stackBy, businesses, unit }) {
             <g key={t}>
               <line x1={M.left} x2={width - M.right} y1={y(t)} y2={y(t)} stroke="#E6E3D8" strokeWidth="1" />
               <text x={M.left - 8} y={y(t)} dy="0.32em" textAnchor="end" fontSize="11" fill="#8C8985">
-                {fmt(t)}
+                {fmtAxis(t)}
               </text>
             </g>
           ))}
