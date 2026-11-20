@@ -25,11 +25,11 @@ Roadmap screen built (src/App.jsx, src/components/WaterfallChart.jsx): header wi
 [Rule: this section describes what exists and works right now — never what is planned. Completed checklist items get absorbed here in compressed form.]
 
 ## Last session
-Session 1: First Session Setup, data conversion, calculation module, Roadmap screen; kt display and % vs. base added on builder request; verifier and builder checks all pass; pull request #2 opened. v1.1 change agreed and put on the Backlog.
+Session 2: change lane v1.2 — Tool Architect (Iteration Mode) and Governor; updated Excel re-converted; span columns for Up/Downsizing, Energy Efficiency and (on builder request) Green Tariffs; TARGET REDUCTION slider 0 to −99 %. Verifier and builder checks all pass; pull request #3 ready to merge. Live URL recorded.
 [Rule: 3–5 lines maximum. Replace each session — what was built, changed, or fixed.]
 
 ## Remaining work
-- [ ] All rows of docs/checks.md re-run on v1.2, verifier report pasted under Check results; pull request; builder rows S1–S8 on the Deploy Preview; builder merges (v1.2 revision)
+- [ ] Builder: merge pull request #3 and delete the branch → main deploys v1.2. Claude Code never merges.
 [Rule: completed items leave this list and are absorbed into Current state. This list only shrinks.]
 
 ## Check results
@@ -47,6 +47,7 @@ Session 1: First Session Setup, data conversion, calculation module, Roadmap scr
 2026-11-20, session 2, Green Tariffs follow-up (commit f825684) — verifier report, verdict "Phase ready for the builder's checks":
 - D1–D15 PASS (independent calculator; D3 17 bars, D4 Green Tariffs (2026–2030) −10,000, D5 12 bars) · S1 PASS · S5 PASS (verifier part) · S8 PASS (verifier part: one Green Tariffs column, band "2026–2030") · Secrets clean
 - Finding: docs/checks.md rows D1, D3–D5, S5, S8 rewritten in this session at the builder's request, matching spec v1.2 — builder to confirm. Spec's copy of the check table lacks D15 (pre-existing; D15 is a Governor-added row).
+- Builder rows S1–S8: all PASS 2026-11-20 on the Deploy Preview of pull request #3 (after the Green Tariffs grouping).
 [Rule: the verifier's report per phase and per branch, with the date: one line per row, PASS or FAIL, and the builder's rows as performed. Kept, never cleared; the handover package copies it. A FAIL is fixed in the tool and re-run, never edited away.]
 
 ## Build decisions
