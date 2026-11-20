@@ -1,9 +1,9 @@
 # GHG Reduction Roadmap
 
 ## Identity
-A single interactive waterfall chart (base year → done measures → actual → planned measures → gap → target) for The Company's GHG roadmap, opened by anyone with the link.
+A single interactive waterfall chart (base year → done measures → actual → planned measures → gap → target) with a target slider, for The Company's GHG roadmap, opened by anyone with the link.
 Tier: 1 — fixed data built into the tool, public link, no login, no database (D1+A1)
-Spec version governed: v1.0 — the version of docs/product-spec.md these rules were derived from.
+Spec version governed: v1.2 — the version of docs/product-spec.md these rules were derived from.
 Position: Standalone
 
 ## Session Protocol
@@ -30,7 +30,7 @@ End of the session — every session ends with a pull request:
 5. After the merge on a first build: check the live site loads and shows the tool; the address goes into PROGRESS.md next session. Then: "This session is done. For the next idea or change, start a new session and describe it in your own words."
 
 First Session Setup (session 1 only):
-1. Create docs/ and move product-spec.md, intent.md (and any intent-[date].md) and checks.md into it; docs/source/GHG_reduction_roadmap.xlsx stays where it is. Leave .claude/settings.json in place. Check every file is in docs/; if one is missing stop: "I cannot find [file]; add it to the repo root and I will move it."
+1. Create docs/ and move product-spec.md, every intent note (intent.md, intent-[date].md) and checks.md into it; docs/source/GHG_reduction_roadmap.xlsx stays where it is. Leave .claude/settings.json in place. Check every file is in docs/; if one is missing stop: "I cannot find [file]; add it to the repo root and I will move it."
 2. Write netlify.toml at the root: `[build]` `command = "npm run build"`, `publish = "dist"`.
 3. The brand skill is already installed at .claude/skills/the-company-brand/SKILL.md; confirm it is there.
 4. Announce what moved, then commit and push the branch before building anything.
@@ -50,7 +50,7 @@ Deployment: GitHub push → Netlify auto-deploys. You work on a branch; the buil
 
 ## Hard Rules
 - No API key, token or credential in any file or commit. This tool needs none; if a change seems to need one, it is a change-lane item.
-- Data lives only in src/data/roadmap.json (converted from docs/source/GHG_reduction_roadmap.xlsx). No database, no form, no upload, nothing saved; the browser only filters and toggles.
+- Data lives only in src/data/roadmap.json (converted from docs/source/GHG_reduction_roadmap.xlsx by scripts/convert_excel.py). No database, no form, no upload, nothing saved; the browser only filters, toggles and moves the target slider.
 - Complexity: build no rate limit, queue, retry, scan, monitor or test framework. The checks in docs/checks.md are not a framework and are never skipped.
 - Done means the checks pass and the verifier agrees. You never edit docs/checks.md to make a check pass (it changes only through the Governor).
 - Branch rule: never push to main, never merge (exception: a new tool's documents at Session 0). One intent per session, one branch, one pull request; the builder merges.
@@ -67,11 +67,14 @@ Governed by the the-company-brand skill at .claude/skills/the-company-brand/SKIL
 - Fonts: Spectral (titles, "The Company" text lockup, no logo file), DM Sans (everything else; labels uppercase, letter-spacing ~0.08em), from Google Fonts
 
 ## Business Rules
-- Rows: `base` and `measure` only; Actual, Gap and Target are calculated. Settings in the data file: base year 2020, actual year 2025, target year 2030, target reduction 50 %, unit t CO2.
+- Rows: `base` and `measure` only; Actual, Gap and Target are calculated. Settings in the data file: base year 2020, actual year 2025, target year 2030, default target reduction 50 %, one-column list ["Up/Downsizing", "Energy Efficiency"], unit t CO2.
+- Target slider "TARGET REDUCTION": native range control, 0 % to −99 %, step 1 %, starts at −50 % (data file setting); reload resets it; not a filter. It drives r in Target and is shown in the subtitle ("kt CO2 · Base year 2020 → Target 2030 (−50 %)"), the summary and the Target tooltip.
 - Every calculation uses only rows passing the filters (Scope 1/2/3, Business, Scope 3 category). Defaults: all selected; Scope 3 shows "no data yet"; Scope 3 category dropdown disabled ("No Scope 3 data yet") while no category exists, and later filters Scope 3 rows only.
-- Multi-year split: if startYear = base year, spread over startYear+1…endYear, else startYear…endYear inclusive; value ÷ years per year. Keep full precision; round only for display (whole tonnes, thousands separators).
-- One bar per measure name per year (rows with the same name and year merge); order: Base 2020 → done bars by year then Excel row order → Actual 2025 → planned bars likewise → Gap → Target 2030. Labels "Name (year)".
-- Actual = Base + sum(done). Target = Base × 0.5. Gap = Base + sum(done) + sum(planned) − Target. Gap ≤ 0 → "Target reached" marker with the over-achievement; Target still drawn.
+- Span columns: a multi-year measure in the one-column list is ONE bar "Name (start–end)" (e.g. "Up/Downsizing (2020–2025)") with its full value, never split; same name and span merge; year band shows the span.
+- Other multi-year measures split: if startYear = base year, spread over startYear+1…endYear, else startYear…endYear inclusive; value ÷ years per year. Calculate in tonnes at full precision; display in kt CO2 with one decimal (axis ticks without decimals), percentages whole.
+- One bar per measure name per year (rows with the same name and year merge); order: Base 2020 → done per-year bars by year then Excel row order → done span columns (Excel row order) → Actual 2025 → planned per-year bars likewise → planned span columns → Gap → Target 2030. Labels "Name (year)" or "Name (start–end)".
+- Actual = Base + sum(done). Target = Base × (1 − r), r = slider value (default 0.5). Gap = Base + sum(done) + sum(planned) − Target. Gap ≤ 0 → "Target reached" marker with the over-achievement; Target still drawn. Per-segment targets use the same r.
+- Summary % vs. Base: Actual = sum(done)/Base; Target = −r; Gap = −Gap/Base (target reached: over-achievement/Base, "beyond target"). Reductions negative.
 - Positive measure values step up. Measures before the base year or after the target year are excluded with a console data warning.
 - "Show detail for past measures" (default on); off → all done bars become one bar "Reductions" = sum(done). Planned bars always in detail.
 - "Show Scope 1, 2, 3" and "Show Business" (both default off) are mutually exclusive; on → every bar stacked by segment; each bar's segments sum to its unstacked value. Gap bar stays one colour (net) with per-segment gaps in its tooltip.
