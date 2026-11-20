@@ -61,6 +61,7 @@ None — the first build session has not happened yet.
 [Rule: bugs, edge cases, and deferred fixes. One line each. Remove when resolved.]
 
 ## Backlog
+- v1.1 change (requested 20 Nov 2026, agreed: merge v1.0 first, then a new session with Tool Architect Iteration Mode → Governor → build): rename "Efficiency measures" to "Energy efficiency" (same measure as the planned "Energy Efficiency"); show Up/Downsizing and Energy efficiency as ONE column each per span instead of split per year, labelled with the timespan (e.g. "Up/Downsizing (2020–2025)", "Energy efficiency (2026–2030)"); done ones placed directly before Actual, planned ones directly before Gap. Green Tariffs (2026–2030) stays split per year. Checks D3/D4 change with it. Also fold in the kt display wording (see Known issues).
 - Adding/editing measures in the tool, saved for everyone — needs a database (Tier 2/3); validate the chart first
 - Excel upload in the browser — not needed to validate the idea
 - Logins / user accounts — needs a database and access rules (Tier 3); the public link was accepted for the MVP on 20 November 2026
