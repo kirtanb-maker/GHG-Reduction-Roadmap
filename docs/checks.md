@@ -68,7 +68,7 @@ Every `no` in docs/access-matrix.md (short form, P1). No login exists, so there 
 
 | # | Reference | Performed by | Last result |
 |---|-----------|--------------|-------------|
-| R1 | Every `no` cell in `docs/access-matrix.md` (the short run): with the publishable key and no key, direct REST calls to `roadmap_rows` and `roadmap_saves` (select, insert, update, delete) are all refused; the functions are the only way in. No `own` cells exist (no login). | Claude Code (through the API), verifier | PASS 2026-11-20 (Claude Code: anon and authenticated hold no select/insert/update/delete on either table and no execute on Save/Undo — 20/20 refused) |
+| R1 | Every `no` cell in `docs/access-matrix.md` (the short run): with the publishable key and no key, direct REST calls to `roadmap_rows` and `roadmap_saves` (select, insert, update, delete) are all refused; the functions are the only way in. No `own` cells exist (no login). | Claude Code (through the API), verifier | PASS 2026-11-20 (Claude Code: privileges 0 of 16 for anon/authenticated; real select attempts as the anon and authenticated roles on both tables refused, Undo function refused — the roles PostgREST uses for the publishable key and for no key; no key value used) |
 | R2 | The function boundary: the save and undo functions refuse a GET and any other method than POST; the read function never returns rows with `deleted_at` set; D23's refusals leave the data unchanged. | Claude Code, verifier | PASS 2026-11-20 (Claude Code: handlers 405 on wrong methods; live on the Deploy Preview 405/405/405; read query is deleted_at=is.null) |
 
 ## How a result is written
