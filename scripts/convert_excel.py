@@ -26,6 +26,8 @@ SETTINGS = {
     "actualYear": 2025,
     "targetYear": 2030,
     "targetReduction": 0.5,
+    "targetReductionRange": [0, 0.99],
+    "singleColumnMeasures": ["Up/Downsizing", "Energy Efficiency", "Green Tariffs"],
     "unit": "t CO2",
 }
 

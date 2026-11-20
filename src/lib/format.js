@@ -27,6 +27,12 @@ export function fmtAxis(tonnes) {
   return sign(k) + ktAxis.format(Math.abs(k));
 }
 
+/** Target reduction as chosen on the slider, whole percent: 0.5 → "−50 %", 0 → "0 %". */
+export function fmtTargetPct(r) {
+  const p = Math.round(r * 100);
+  return p === 0 ? '0 %' : `−${p} %`;
+}
+
 /** Share of the base year, one decimal, signed: −0.219 → "−21.9 %", 0.05 → "+5.0 %". */
 export function fmtPct(ratio) {
   const p = Math.round(ratio * 1000) / 10;
