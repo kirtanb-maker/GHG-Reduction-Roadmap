@@ -50,7 +50,8 @@ const sum = (obj) => Object.values(obj).reduce((a, b) => a + b, 0);
 
 /**
  * Compute the waterfall.
- * @param data      parsed src/data/roadmap.json
+ * @param data      { settings (src/lib/settings.js), rows: app-shape rows (rowType, name, startYear,
+ *                    endYear, value, scope, scope3Category, business, status, singleColumn, sortOrder) }
  * @param options   { scopes: number[], businesses: string[], scope3Categories: string[]|null,
  *                    detailPast: boolean, stackBy: null | 'scope' | 'business',
  *                    targetReduction?: number (0–0.99, from the slider; default: data settings) }
@@ -60,7 +61,6 @@ export function computeRoadmap(data, options) {
   const { baseYear, actualYear, targetYear } = data.settings;
   const [rMin, rMax] = data.settings.targetReductionRange || [0, 0.99];
   const r = Math.min(rMax, Math.max(rMin, options.targetReduction ?? data.settings.targetReduction));
-  const singleColumn = new Set(data.settings.singleColumnMeasures || []);
   const stackBy = options.stackBy || null;
   const warnings = [];
 
@@ -81,12 +81,12 @@ export function computeRoadmap(data, options) {
 
   // Base per segment.
   const baseSegs = {};
-  for (const r of rows.filter((r) => r.type === 'base')) addTo(baseSegs, segmentKey(r, stackBy), r.value);
+  for (const r of rows.filter((r) => r.rowType === 'base')) addTo(baseSegs, segmentKey(r, stackBy), r.value);
 
   // Span columns (Section 9 rule 2): one-column-list measures stay one piece per span.
   // Other multi-year measures split into yearly pieces (rule 3). Merge by status + name + year/span.
   const merged = new Map();
-  for (const r of rows.filter((r) => r.type === 'measure')) {
+  for (const r of rows.filter((r) => r.rowType === 'measure')) {
     if (r.startYear < baseYear || r.endYear > targetYear) {
       warnings.push(`Excluded "${r.name}" (${r.startYear}-${r.endYear}): outside ${baseYear}-${targetYear}.`);
       continue;
@@ -98,16 +98,16 @@ export function computeRoadmap(data, options) {
       warnings.push(`"${r.name}" is planned but dated on or before the actual year ${actualYear}.`);
     }
     const years = spreadYears(r, baseYear);
-    if (singleColumn.has(r.name) && years.length > 1) {
+    if (r.singleColumn && years.length > 1) {
       const key = `${r.status}|${r.name}|${r.startYear}-${r.endYear}`;
       if (!merged.has(key)) {
         merged.set(key, {
-          kind: r.status, name: r.name, year: null, order: r.order, segs: {}, spread: null,
+          kind: r.status, name: r.name, year: null, order: r.sortOrder, segs: {}, spread: null,
           span: { start: r.startYear, end: r.endYear, years: years.length, total: 0 },
         });
       }
       const piece = merged.get(key);
-      piece.order = Math.min(piece.order, r.order);
+      piece.order = Math.min(piece.order, r.sortOrder);
       addTo(piece.segs, segmentKey(r, stackBy), r.value);
       piece.span.total += r.value;
       continue;
@@ -120,13 +120,13 @@ export function computeRoadmap(data, options) {
           kind: r.status,
           name: r.name,
           year,
-          order: r.order,
+          order: r.sortOrder,
           segs: {},
           spread: years.length > 1 ? { start: r.startYear, end: r.endYear, years: years.length, total: 0 } : null,
         });
       }
       const piece = merged.get(key);
-      piece.order = Math.min(piece.order, r.order);
+      piece.order = Math.min(piece.order, r.sortOrder);
       addTo(piece.segs, segmentKey(r, stackBy), share);
       if (piece.spread) piece.spread.total += r.value;
     }
