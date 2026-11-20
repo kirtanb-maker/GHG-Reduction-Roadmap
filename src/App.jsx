@@ -2,11 +2,13 @@ import { useEffect, useMemo, useState } from 'react';
 import data from './data/roadmap.json';
 import { computeRoadmap, listBusinesses, listScope3Categories, SCOPES } from './lib/roadmap.js';
 import { UNSTACKED, segmentPalette } from './lib/colors.js';
-import { DISPLAY_UNIT, fmt, fmtPct } from './lib/format.js';
+import { DISPLAY_UNIT, fmt, fmtPct, fmtTargetPct } from './lib/format.js';
 import WaterfallChart from './components/WaterfallChart.jsx';
 
-const VERSION = 'v1.0';
+const VERSION = 'v1.2';
 const { baseYear, targetYear } = data.settings;
+const DEFAULT_TARGET_PCT = Math.round(data.settings.targetReduction * 100);
+const [T_MIN, T_MAX] = (data.settings.targetReductionRange || [0, 0.99]).map((v) => Math.round(v * 100));
 const unit = DISPLAY_UNIT;
 const BUSINESSES = listBusinesses(data);
 const S3_CATEGORIES = listScope3Categories(data);
@@ -84,13 +86,15 @@ export default function App() {
   const [showScope, setShowScope] = useState(false);
   const [showBusiness, setShowBusiness] = useState(false);
   const [detailPast, setDetailPast] = useState(true);
+  const [targetPct, setTargetPct] = useState(DEFAULT_TARGET_PCT);
+  const targetReduction = targetPct / 100;
 
   const stackBy = showScope ? 'scope' : showBusiness ? 'business' : null;
   const result = useMemo(
     () => computeRoadmap(data, {
-      scopes, businesses, scope3Categories: S3_CATEGORIES.length ? s3cats : null, detailPast, stackBy,
+      scopes, businesses, scope3Categories: S3_CATEGORIES.length ? s3cats : null, detailPast, stackBy, targetReduction,
     }),
-    [scopes, businesses, s3cats, detailPast, stackBy],
+    [scopes, businesses, s3cats, detailPast, stackBy, targetReduction],
   );
 
   useEffect(() => {
@@ -106,7 +110,7 @@ export default function App() {
       <header className="mb-6">
         <div className="font-display text-lg font-medium">The Company</div>
         <h1 className="mt-2 font-display text-3xl font-medium sm:text-4xl">GHG Reduction Roadmap</h1>
-        <p className="mt-1 text-sm text-muted">{unit} · Base year {baseYear} → Target {targetYear}</p>
+        <p className="mt-1 text-sm text-muted" data-testid="subtitle">{unit} · Base year {baseYear} → Target {targetYear} ({fmtTargetPct(targetReduction)})</p>
       </header>
 
       <section aria-label="Filters and view options" className="mb-4 space-y-4 rounded bg-panel p-4">
@@ -142,6 +146,17 @@ export default function App() {
                 {S3_CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
               </select>
             )}
+          </div>
+          <div className="w-full sm:w-64">
+            <div className="mb-2 flex items-baseline justify-between gap-3">
+              <label htmlFor="target" className="label">Target reduction</label>
+              <output htmlFor="target" className="text-sm font-medium" data-testid="target-value">{fmtTargetPct(targetReduction)}</output>
+            </div>
+            <input id="target" type="range" min={T_MIN} max={T_MAX} step={1} value={targetPct}
+              onChange={(e) => setTargetPct(Number(e.target.value))}
+              aria-valuetext={`${fmtTargetPct(targetReduction)} vs. base year`}
+              className="h-6 w-full cursor-pointer accent-ink" />
+            <div className="flex justify-between text-xs text-muted"><span>0 %</span><span>−{T_MAX} %</span></div>
           </div>
         </div>
         <div className="flex flex-wrap gap-x-6 gap-y-3 border-t border-muted/20 pt-4">

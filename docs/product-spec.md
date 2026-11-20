@@ -301,7 +301,7 @@ One view.
    - Otherwise it spreads over startYear … endYear inclusive. Example: 2026-2030 → 5 years.
    - Each year receives value ÷ number of years. Example: Green Tariffs −10,000 over 2026–2030 → "Green Tariffs (2026)" … "(2030)" at −2,000 each.
    - Single-year measures stay in their year.
-   - Calculations keep full precision in tonnes; only displayed values are rounded (kt CO2 with one decimal, axis ticks without decimals; percentages to whole percent).
+   - Calculations keep full precision in tonnes; only displayed values are rounded (kt CO2 with one decimal, axis ticks without decimals; summary percentages with one decimal; the slider's own value in whole percent).
 4. **Base** = sum of all `base` rows.
 5. **Reductions (done)** = sum of all `done` measure values.
 6. **Actual** = Base + Reductions (done). Values are negative for reductions, so this is "base year minus the sum of done measures".
@@ -311,7 +311,7 @@ One view.
    - If Gap > 0, the Gap bar steps down from the running total to the Target.
    - If Gap ≤ 0, the Gap bar is replaced by a marker labelled **"Target reached"**, showing the over-achievement (e.g. "Target reached · 10.3 kt beyond target"). The Target bar is still drawn.
 10. **Stacked views.** Steps 4–9 are computed per segment (per scope or per business) for the stacked segments and tooltips. Each segment's Target uses the same r. Each bar's total always equals the unstacked value. The Gap bar is shown as the net value (Section 8).
-11. **Summary percentages (vs. Base).** Actual: Reductions (done) ÷ Base; Target: −r; Gap: −Gap ÷ Base (when the target is reached: + the over-achievement ÷ Base, shown as beyond target). Reductions read negative, increases positive.
+11. **Summary percentages (vs. Base).** Actual: Reductions (done) ÷ Base; Target: −r; Gap: −Gap ÷ Base (when the target is reached: −over-achievement ÷ Base, shown as beyond target). Reductions read negative, increases positive.
 
 **Output:** the chart bars, the tooltips, the subtitle's target percentage and the summary line (Base, Actual, Target, Gap / Target reached).
 

@@ -4,6 +4,14 @@
     "actualYear": 2025,
     "targetYear": 2030,
     "targetReduction": 0.5,
+    "targetReductionRange": [
+      0,
+      0.99
+    ],
+    "singleColumnMeasures": [
+      "Up/Downsizing",
+      "Energy Efficiency"
+    ],
     "unit": "t CO2"
   },
   "source": "docs/source/GHG_reduction_roadmap.xlsx",
@@ -38,7 +46,7 @@
       "name": null,
       "startYear": 2020,
       "endYear": 2020,
-      "value": 10000.0,
+      "value": 20000.0,
       "scope": 2,
       "scope3Category": null,
       "business": "Manufacturing",
@@ -83,7 +91,7 @@
     },
     {
       "type": "measure",
-      "name": "Efficiency measures",
+      "name": "Energy Efficiency",
       "startYear": 2020,
       "endYear": 2025,
       "value": -3000.0,
@@ -134,7 +142,7 @@
       "name": "Energy Attribute Certificates",
       "startYear": 2022,
       "endYear": 2022,
-      "value": -11000.0,
+      "value": -9000.0,
       "scope": 2,
       "scope3Category": null,
       "business": "Manufacturing",

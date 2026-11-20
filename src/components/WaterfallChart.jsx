@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { fillFor } from '../lib/colors.js';
-import { fmt, fmtAxis, fmtStep } from '../lib/format.js';
+import { fmt, fmtAxis, fmtStep, fmtTargetPct } from '../lib/format.js';
 
 const SLOT = 32; // minimum px per bar; below that the chart scrolls inside its frame
 const M = { top: 34, right: 8, bottom: 196, left: 58 };
@@ -43,12 +43,14 @@ export default function WaterfallChart({ result, stackBy, businesses, unit }) {
   const ticks = Array.from({ length: Math.round(yMax / step) + 1 }, (_, i) => step * i);
   const cx = (i) => M.left + slot * i + slot / 2;
 
-  // Year groups for the band under the labels.
+  // Year groups for the band under the labels; a span column's group reads its span.
+  const groupOf = (b) => (!isStep(b) ? null : b.span ? `${b.span.start}–${b.span.end}` : b.year);
   const groups = [];
   bars.forEach((b, i) => {
+    const g = groupOf(b);
     const last = groups[groups.length - 1];
-    if (b.year != null && isStep(b) && last && last.year === b.year && last.end === i - 1) last.end = i;
-    else if (b.year != null && isStep(b)) groups.push({ year: b.year, start: i, end: i });
+    if (g != null && last && last.year === g && last.end === i - 1) last.end = i;
+    else if (g != null) groups.push({ year: g, start: i, end: i });
   });
 
   const hovered = hover != null ? bars[hover.i] : null;
@@ -189,8 +191,15 @@ function Tooltip({ bar, stackBy, segmentKeys, unit, left, top }) {
     <div role="tooltip" className="pointer-events-none absolute z-10 w-56 -translate-x-1/2 -translate-y-full rounded border border-panel bg-white p-3 text-sm shadow-sm" style={{ left, top }}>
       <div className="font-medium">{title}</div>
       {bar.year != null && isStep(bar) && <div className="text-xs text-muted">Year {bar.year}</div>}
+      {bar.span && <div className="text-xs text-muted">Years {bar.span.start}–{bar.span.end}</div>}
       <div className="mt-1">{value} {unit}</div>
-      {status && <div className="text-xs text-muted">{status}{bar.kind === 'reductions' ? ` · ${bar.count} yearly measure steps combined` : ''}</div>}
+      {status && <div className="text-xs text-muted">{status}{bar.kind === 'reductions' ? ` · ${bar.count} measure steps combined` : ''}</div>}
+      {bar.kind === 'target' && <div className="text-xs text-muted">{fmtTargetPct(bar.targetReduction)} vs. base year</div>}
+      {bar.span && (
+        <div className="mt-1 text-xs text-muted">
+          {bar.name} {bar.span.start}–{bar.span.end}, total over {bar.span.years} years
+        </div>
+      )}
       {bar.spread && (
         <div className="mt-1 text-xs text-muted">
           Part of {bar.name} {bar.spread.start}–{bar.spread.end}, total {fmt(bar.spread.total)} {unit} spread over {bar.spread.years} years
