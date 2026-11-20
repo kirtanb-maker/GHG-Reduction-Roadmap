@@ -7,7 +7,7 @@
 **Session:** 1
 **Last updated:** 20 November 2026 — session 1
 **Live URL:** none yet [Rule: fill in after the first successful deploy]
-**First deploy:** not yet [Rule: the date the first pull request was merged with all builder checks passing; a record only]
+**First deploy:** 20 November 2026 [Rule: the date the first pull request was merged with all builder checks passing; a record only]
 **Stage:** business logic [Rule: one of — business logic and database / second screen and access design / login and access rules together / deploy and maintain. Advance it when that stage's items are absorbed into Current state. Decided by what exists, never by a week or a version number.]
 
 ## Plan for this session
@@ -27,12 +27,10 @@ Roadmap screen built (src/App.jsx, src/components/WaterfallChart.jsx): header, f
 [Rule: this section describes what exists and works right now — never what is planned. Completed checklist items get absorbed here in compressed form.]
 
 ## Last session
-None — the first build session has not happened yet.
+Session 1: First Session Setup, data conversion, calculation module, Roadmap screen; kt display and % vs. base added on builder request; verifier and builder checks all pass; pull request #2 opened. v1.1 change agreed and put on the Backlog.
 [Rule: 3–5 lines maximum. Replace each session — what was built, changed, or fixed.]
 
 ## Remaining work
-- [ ] Push the branch and confirm it reached GitHub; open the pull request (or give the builder the prefilled compare link) and give the builder its link
-- [ ] Builder checks: on request, the builder rows of docs/checks.md as a numbered list of actions; record the results; fix failures in this session
 - [ ] Builder: merge the pull request and delete the branch → main deploys. Claude Code never merges. First build: the builder sends the site address; Claude Code checks the live site and records it as Live URL next session. This session is then done.
 [Rule: completed items leave this list and are absorbed into Current state. This list only shrinks.]
 
@@ -40,7 +38,7 @@ None — the first build session has not happened yet.
 2026-11-20, session 1, branch claude/practical-gauss-t8820h — verifier report (fresh context), verdict "Phase ready for the builder's checks":
 - D1–D12 PASS (D1 field-by-field vs Excel; D2–D11 also matched an independent calculator over 30 filter/stack combinations, incl. Scope 2 + Stores gap = 0 → "Target reached"; D12 netlify.toml + build OK)
 - S1 PASS (1440 px preview, brand fonts/colours, defaults, no console errors) · S6 PASS (iPhone 13 and 375 px: page = viewport, chart scrolls in its frame)
-- S2–S5: builder rows, pending on the Deploy Preview · Refusal checks: not applicable · Secrets scan: clean
+- Builder rows S1–S6: all PASS 2026-11-20 on the Deploy Preview of pull request #2 (after the kt / % update) · Refusal checks: not applicable · Secrets scan: clean
 - Finding fixed: doubled pipe in docs/checks.md Last result cells. [Rule: the verifier's report per phase and per branch, with the date: one line per row, PASS or FAIL, and the builder's rows as performed. Kept, never cleared; the handover package copies it. A FAIL is fixed in the tool and re-run, never edited away.]
 
 ## Build decisions

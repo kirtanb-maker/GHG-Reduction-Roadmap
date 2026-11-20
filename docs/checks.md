@@ -32,12 +32,12 @@ What must be visible and what must happen.
 
 | # | Screen | What must be true | Performed by | Last result |
 |---|--------|-------------------|--------------|-------------|
-| S1 | Roadmap — layout | Header with "The Company" lockup and title; filter bar (Scope, Business, disabled Scope 3 category showing "No Scope 3 data yet"); three toggles with their default states; chart; legend; summary line; footer. Brand fonts and colours from Section 10. | builder, verifier | PASS 2026-11-20 (Claude Code, screenshot) · PASS 2026-11-20 (verifier) |
-| S2 | Roadmap — colours | Default view: Base/Actual grey, Target black, done measures darker green, planned measures lighter green, Gap pink. Done vs. planned is clearly distinguishable. | builder | |
-| S3 | Roadmap — toggles | "Show Scope 1, 2, 3" stacks every bar by scope, and "Show Business" stacks every bar by business, each with its legend. Switching one on switches the other off. Planned segments are lighter than done segments. | builder | |
-| S4 | Roadmap — collapse | Switching "Show detail for past measures" off replaces all done bars with one "Reductions" bar; switching it on restores them. | builder | |
-| S5 | Roadmap — tooltip | Hovering a bar shows name, year, value and status. A multi-year piece shows "part of … spread over n years". In stacked mode the tooltip shows segment values. | builder | |
-| S6 | Roadmap — phone | At phone width (≈375 px) filters and toggles wrap, the chart scrolls horizontally inside its frame and the page has no sideways scroll. | builder, verifier | PASS 2026-11-20 (Claude Code, iPhone 13 emulation: page 390 px = viewport, chart scrolls in frame) · PASS 2026-11-20 (verifier) |
+| S1 | Roadmap — layout | Header with "The Company" lockup and title; filter bar (Scope, Business, disabled Scope 3 category showing "No Scope 3 data yet"); three toggles with their default states; chart; legend; summary line; footer. Brand fonts and colours from Section 10. | builder, verifier | PASS 2026-11-20 (Claude Code, screenshot) · PASS 2026-11-20 (verifier) · PASS 2026-11-20 (builder, Deploy Preview) |
+| S2 | Roadmap — colours | Default view: Base/Actual grey, Target black, done measures darker green, planned measures lighter green, Gap pink. Done vs. planned is clearly distinguishable. | builder || PASS 2026-11-20 (builder, Deploy Preview) |
+| S3 | Roadmap — toggles | "Show Scope 1, 2, 3" stacks every bar by scope, and "Show Business" stacks every bar by business, each with its legend. Switching one on switches the other off. Planned segments are lighter than done segments. | builder || PASS 2026-11-20 (builder, Deploy Preview) |
+| S4 | Roadmap — collapse | Switching "Show detail for past measures" off replaces all done bars with one "Reductions" bar; switching it on restores them. | builder || PASS 2026-11-20 (builder, Deploy Preview) |
+| S5 | Roadmap — tooltip | Hovering a bar shows name, year, value and status. A multi-year piece shows "part of … spread over n years". In stacked mode the tooltip shows segment values. | builder || PASS 2026-11-20 (builder, Deploy Preview) |
+| S6 | Roadmap — phone | At phone width (≈375 px) filters and toggles wrap, the chart scrolls horizontally inside its frame and the page has no sideways scroll. | builder, verifier | PASS 2026-11-20 (Claude Code, iPhone 13 emulation: page 390 px = viewport, chart scrolls in frame) · PASS 2026-11-20 (verifier) · PASS 2026-11-20 (builder, Deploy Preview) |
 
 ## Refusal checks
 Not applicable: no database, no login.
