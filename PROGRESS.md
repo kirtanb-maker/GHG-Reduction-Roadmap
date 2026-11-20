@@ -107,5 +107,5 @@ Session 2: change lane v1.2 — Tool Architect (Iteration Mode) and Governor; up
 [Rule: deferred and approved items live here, nowhere else. When a new stage starts or the spec is revised, review this list: an item now in scope is promoted into Remaining work and removed from here, with a Build decisions line saying so. Nothing here is built without being promoted.]
 
 ## Notes for next session
-None.
+Paused 20 Nov 2026 at the builder's request, pull request #4 open (Deploy Preview waiting). When the builder says Supabase is connected to Netlify: confirm the `sb_` key check, run D15–D24 end-to-end on the Deploy Preview (restore the seed after), run the verifier, give the builder rows as a numbered list, run the reviewer.
 [Rule: the builder writes here between sessions. Claude Code reads these aloud at session start, acts on them, then clears this section.]
