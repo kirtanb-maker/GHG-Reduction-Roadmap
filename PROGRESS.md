@@ -43,6 +43,10 @@ Session 1: First Session Setup, data conversion, calculation module, Roadmap scr
 - S1 PASS (1440 px, brand, subtitle "(−50 %)", slider at −50 %, no console errors) · S5 PASS (verifier part: span and Green Tariffs tooltips, stacked segments) · S6 PASS (iPhone 13: page 390 = viewport, chart scrolls in frame, slider moves by tap) · S7 PASS (arrow keys 1 %, −30 % → Target reached 10.3 kt, −70 % larger Gap, reload → −50 %) · S8 PASS (span columns before Actual and Gap, Green Tariffs per year, band "2020–2025" / "2026–2030")
 - Builder rows S1–S8: pending on the Deploy Preview · Refusal checks: not applicable · Secrets scan: clean (tree, dist, history)
 - Findings for the builder: (1) docs/checks.md row text was rewritten by the Governor for v1.2 (the legitimate path); (2) in the build commit I corrected two wording lines in product-spec.md v1.2 and CLAUDE.md before merge (summary % one decimal; sign of "beyond target") to match the v1.0 behaviour you approved — please confirm; (3) check-data.mjs D1 checks the JSON only; the Excel comparison is done separately (done by both Claude Code and the verifier).
+
+2026-11-20, session 2, Green Tariffs follow-up (commit f825684) — verifier report, verdict "Phase ready for the builder's checks":
+- D1–D15 PASS (independent calculator; D3 17 bars, D4 Green Tariffs (2026–2030) −10,000, D5 12 bars) · S1 PASS · S5 PASS (verifier part) · S8 PASS (verifier part: one Green Tariffs column, band "2026–2030") · Secrets clean
+- Finding: docs/checks.md rows D1, D3–D5, S5, S8 rewritten in this session at the builder's request, matching spec v1.2 — builder to confirm. Spec's copy of the check table lacks D15 (pre-existing; D15 is a Governor-added row).
 [Rule: the verifier's report per phase and per branch, with the date: one line per row, PASS or FAIL, and the builder's rows as performed. Kept, never cleared; the handover package copies it. A FAIL is fixed in the tool and re-run, never edited away.]
 
 ## Build decisions
