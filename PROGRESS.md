@@ -34,8 +34,6 @@ Session 2: change lane v1.2 — Tool Architect (Iteration Mode) and Governor; up
 [Rule: 3–5 lines maximum. Replace each session — what was built, changed, or fixed.]
 
 ## Remaining work
-- [ ] (v2.0 revision) End-to-end through the live functions once Supabase is connected to Netlify: D15–D24 on the Deploy Preview (seed restored after each), the verifier
-- [ ] (v2.0 revision) Builder: connect Supabase to the Netlify site with the Supabase extension (Extensions → Supabase → Install; site → Connect; project the-company-sustainability, framework Vite) once the project exists; check the values start with `sb_`; redeploy
 - [ ] (v2.0 revision) Checks pass for v2.0 — every row in docs/checks.md shows a pass dated in this session; the verifier's report pasted under Check results
 - [ ] (v2.0 revision) Push the branch (confirmed); Claude Code opens the pull request; the builder's checks on the Deploy Preview as a numbered list; data reset to the state the builder wants; the reviewer passes the branch; the builder merges and deletes the branch → main deploys. Claude Code never merges.
 - [ ] (v2.0 revision) Builder: switch the Supabase project to Pro in the dashboard (manual billing step) before the link is shared beyond your own testing; Free has no backups and pauses when idle
@@ -62,7 +60,9 @@ Session 2: change lane v1.2 — Tool Architect (Iteration Mode) and Governor; up
 - npm run check:data: D1 (fixture side), D2–D14, D15–D21 and D24 (calculation half), D23 (validation half, 14 refusals) — all PASS.
 - Function handlers with a stubbed database: R2 PASS (405 on wrong methods), 413 over 50 KB, 400 on invalid fields, refused saves never reach the database, missing key → 503 with no detail.
 - Playwright (functions stood in with the same validation): S1, S6 (iPhone 13: page 390 = viewport), S9–S17 and D24 (screen) PASS; no console errors. D25 PASS (no Supabase URL or key in dist).
-- Pending: D15–D24 end-to-end through the live functions on the Deploy Preview (needs the Supabase extension connected); the verifier.
+- Builder connected the Supabase extension (20 Nov 2026); deploy preview protection switched off by the builder for the checks. A personal cloud environment "GHG-Reduction-Roadmap" allows this session to reach the preview and live site.
+- Live on the Deploy Preview of pull request #4: D15–D24 PASS through the real functions (each save undone; second Undo 409; 13 invalid saves refused, rows unchanged); R2 PASS (405/405/405).
+- Pending: the verifier; the builder rows; the reviewer; final data reset (two hidden test rows and the save snapshots).
 [Rule: the verifier's report per phase and per branch, with the date: one line per row, PASS or FAIL, and the builder's rows as performed. Kept, never cleared; the handover package copies it. A FAIL is fixed in the tool and re-run, never edited away.]
 
 ## Build decisions
@@ -85,6 +85,7 @@ Session 2: change lane v1.2 — Tool Architect (Iteration Mode) and Governor; up
 - v2.0: the panel stores unsaved edits as a draft in the browser; the chart preview uses only the draft lines that pass validation. Business chips and Scope 3 categories are derived from the rows, so a new business or category appears on its own (selected).
 - v2.0: error text uses a dark pink #B3263C and error borders #D9485F (the brand defines no error colour; derived from the pink accent so it reads on white).
 - v2.0: About this tool is a hash route (#about), no router library. Contact ghgroadmap@icloud.com (builder, 20 Nov 2026).
+- v2.0: when the Supabase variables are missing, the functions' 503 reply names which variable NAMES are set and the kind of URL/key (never a value), so a missing extension connection is visible.
 - Excel conversion is a Python script (scripts/convert_excel.py, needs openpyxl); documented in docs/data-conversion.md.
 [Rule: one line per decision made during the build that is not in the spec — prompt structures, field formats, naming choices, library picks. Future sessions depend on these to stay consistent.]
 
@@ -107,5 +108,5 @@ Session 2: change lane v1.2 — Tool Architect (Iteration Mode) and Governor; up
 [Rule: deferred and approved items live here, nowhere else. When a new stage starts or the spec is revised, review this list: an item now in scope is promoted into Remaining work and removed from here, with a Build decisions line saying so. Nothing here is built without being promoted.]
 
 ## Notes for next session
-Paused 20 Nov 2026 at the builder's request, pull request #4 open (Deploy Preview waiting). When the builder says Supabase is connected to Netlify: confirm the `sb_` key check, run D15–D24 end-to-end on the Deploy Preview (restore the seed after), run the verifier, give the builder rows as a numbered list, run the reviewer.
+None.
 [Rule: the builder writes here between sessions. Claude Code reads these aloud at session start, acts on them, then clears this section.]
