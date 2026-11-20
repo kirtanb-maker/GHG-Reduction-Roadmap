@@ -6,7 +6,7 @@
 
 **Session:** 2
 **Last updated:** 20 November 2026 — session 2
-**Live URL:** none yet [Rule: fill in after the first successful deploy]
+**Live URL:** https://ghgreductionroadmap.netlify.app/ [Rule: fill in after the first successful deploy]
 **First deploy:** 20 November 2026 [Rule: the date the first pull request was merged with all builder checks passing; a record only]
 **Stage:** business logic [Rule: one of — business logic and database / second screen and access design / login and access rules together / deploy and maintain. Advance it when that stage's items are absorbed into Current state. Decided by what exists, never by a week or a version number.]
 
@@ -29,7 +29,6 @@ Session 1: First Session Setup, data conversion, calculation module, Roadmap scr
 [Rule: 3–5 lines maximum. Replace each session — what was built, changed, or fixed.]
 
 ## Remaining work
-- [ ] Builder: send the live site address (pull request #2 is merged) so it can be recorded as Live URL
 - [ ] All rows of docs/checks.md re-run on v1.2, verifier report pasted under Check results; pull request; builder rows S1–S8 on the Deploy Preview; builder merges (v1.2 revision)
 [Rule: completed items leave this list and are absorbed into Current state. This list only shrinks.]
 
