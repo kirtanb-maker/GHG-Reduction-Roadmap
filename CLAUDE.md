@@ -67,7 +67,7 @@ Governed by the the-company-brand skill at .claude/skills/the-company-brand/SKIL
 - Fonts: Spectral (titles, "The Company" text lockup, no logo file), DM Sans (everything else; labels uppercase, letter-spacing ~0.08em), from Google Fonts
 
 ## Business Rules
-- Rows: `base` and `measure` only; Actual, Gap and Target are calculated. Settings in the data file: base year 2020, actual year 2025, target year 2030, default target reduction 50 %, one-column list ["Up/Downsizing", "Energy Efficiency"], unit t CO2.
+- Rows: `base` and `measure` only; Actual, Gap and Target are calculated. Settings in the data file: base year 2020, actual year 2025, target year 2030, default target reduction 50 %, one-column list ["Up/Downsizing", "Energy Efficiency", "Green Tariffs"], unit t CO2.
 - Target slider "TARGET REDUCTION": native range control, 0 % to −99 %, step 1 %, starts at −50 % (data file setting); reload resets it; not a filter. It drives r in Target and is shown in the subtitle ("kt CO2 · Base year 2020 → Target 2030 (−50 %)"), the summary and the Target tooltip.
 - Every calculation uses only rows passing the filters (Scope 1/2/3, Business, Scope 3 category). Defaults: all selected; Scope 3 shows "no data yet"; Scope 3 category dropdown disabled ("No Scope 3 data yet") while no category exists, and later filters Scope 3 rows only.
 - Span columns: a multi-year measure in the one-column list is ONE bar "Name (start–end)" (e.g. "Up/Downsizing (2020–2025)") with its full value, never split; same name and span merge; year band shows the span.

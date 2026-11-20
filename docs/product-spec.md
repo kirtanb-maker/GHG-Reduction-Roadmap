@@ -18,7 +18,7 @@
 
 **Why it exists:** The roadmap currently lives in an Excel table. The tool turns it into one clear, filterable picture of base year → done measures → actual → planned measures → gap → target. It shows how much has been achieved, what is planned and how big the remaining gap is, for the whole company or any scope or business.
 
-**Build status:** Iteration — previous version was v1.0 (the MVP waterfall on the first Excel, every multi-year measure split per year, target fixed at −50 %). This build (v1.2, which also absorbs the agreed v1.1 change) brings the updated Excel (new numbers; "Efficiency measures" renamed "Energy Efficiency"), shows Up/Downsizing and Energy Efficiency as one column per time span, adds a target slider (0 to −99 %, default −50 %), and aligns the spec with the kt display already on screen.
+**Build status:** Iteration — previous version was v1.0 (the MVP waterfall on the first Excel, every multi-year measure split per year, target fixed at −50 %). This build (v1.2, which also absorbs the agreed v1.1 change) brings the updated Excel (new numbers; "Efficiency measures" renamed "Energy Efficiency"), shows Up/Downsizing, Energy Efficiency and Green Tariffs as one column per time span, adds a target slider (0 to −99 %, default −50 %), and aligns the spec with the kt display already on screen.
 
 ---
 
@@ -163,7 +163,7 @@ There is no database. For Claude Code, the built-in data is described here becau
 | Target year | 2030 |
 | Target reduction vs. base year (default) | 50 % — the starting position of the target slider |
 | Target slider range | 0 % to 99 %, steps of 1 % (shown as 0 % … −99 %) |
-| Measures shown as one column per span | "Up/Downsizing", "Energy Efficiency" (list in the data file; any other multi-year measure is split per year) |
+| Measures shown as one column per span | "Up/Downsizing", "Energy Efficiency", "Green Tariffs" (list in the data file; any other multi-year measure is split per year) |
 | Unit | t CO2 (stored and calculated in tonnes; displayed in kt CO2) |
 
 **Row types and fields:**
@@ -255,7 +255,7 @@ One view.
   4. **The planned measures**, one bar per measure per year, in the same order; then the planned span columns, directly before Gap.
   5. **Gap.**
   6. **Target 2030.**
-  - **Span columns:** a multi-year measure whose name is in the data file's one-column list ("Up/Downsizing", "Energy Efficiency") is shown as ONE column for its whole span instead of one per year, labelled with the span as written in the Excel: "Up/Downsizing (2020–2025)", "Energy Efficiency (2020–2025)", "Energy Efficiency (2026–2030)". Its value is the measure's full value. Any other multi-year measure (Green Tariffs 2026–2030) is still split per year.
+  - **Span columns:** a multi-year measure whose name is in the data file's one-column list ("Up/Downsizing", "Energy Efficiency", "Green Tariffs") is shown as ONE column for its whole span instead of one per year, labelled with the span as written in the Excel: "Up/Downsizing (2020–2025)", "Energy Efficiency (2020–2025)", "Green Tariffs (2026–2030)", "Energy Efficiency (2026–2030)". Its value is the measure's full value. Any other multi-year measure (none in the current data) is still split per year.
   - Measure labels read "Name (year)", e.g. "Electric Boiler (2023)", or "Name (start–end)" for a span column. Under the bars, the axis shows the year groups (2021, 2022, …) so the year progression is visible; under a span column the band shows its span ("2020–2025").
   - Excel rows that share a measure name and a year (or the same span) are merged into one bar (e.g. Up/Downsizing for Manufacturing and for Stores). Stacking shows the split.
 - **Y-axis:** kt CO2, starting at 0, ticks without decimals.
@@ -299,7 +299,7 @@ One view.
 3. **Splitting the other multi-year measures.** For a measure with startYear < endYear that is not in the one-column list:
    - If startYear equals the base year, the measure spreads over startYear+1 … endYear. Example: 2020-2025 → 2021–2025, 5 years.
    - Otherwise it spreads over startYear … endYear inclusive. Example: 2026-2030 → 5 years.
-   - Each year receives value ÷ number of years. Example: Green Tariffs −10,000 over 2026–2030 → "Green Tariffs (2026)" … "(2030)" at −2,000 each.
+   - Each year receives value ÷ number of years. Example: a measure of −10,000 over 2026–2030 → "Name (2026)" … "(2030)" at −2,000 each. (No measure in the current data is split this way; the rule stays for future rows.)
    - Single-year measures stay in their year.
    - Calculations keep full precision in tonnes; only displayed values are rounded (kt CO2 with one decimal, axis ticks without decimals; summary percentages with one decimal; the slider's own value in whole percent).
 4. **Base** = sum of all `base` rows.
@@ -381,11 +381,11 @@ The Project Governor writes this section out as `docs/checks.md`. For this D1 to
 
 | # | Given (data and filter) | Expected result | Performed by |
 |---|---------------------------|-----------------|--------------|
-| D1 | `src/data/roadmap.json` compared to `docs/source/GHG_reduction_roadmap.xlsx` (v1.2 Excel) | 4 base rows (total 120,000; Scope 2 Manufacturing 20,000) and 14 measure rows, with values, scopes, businesses and statuses matching Section 5; "Energy Efficiency" used for both efficiency rows, no "Efficiency measures"; Energy Attribute Certificates 2022 = −9,000; no Actual/Gap/Target rows imported; settings carry default target 50 % and the one-column list (Up/Downsizing, Energy Efficiency) | Claude Code, verifier |
+| D1 | `src/data/roadmap.json` compared to `docs/source/GHG_reduction_roadmap.xlsx` (v1.2 Excel) | 4 base rows (total 120,000; Scope 2 Manufacturing 20,000) and 14 measure rows, with values, scopes, businesses and statuses matching Section 5; "Energy Efficiency" used for both efficiency rows, no "Efficiency measures"; Energy Attribute Certificates 2022 = −9,000; no Actual/Gap/Target rows imported; settings carry default target 50 % and the one-column list (Up/Downsizing, Energy Efficiency, Green Tariffs) | Claude Code, verifier |
 | D2 | Default filters, detail on, slider −50 % | Base 120,000; Actual 97,900; running total after planned 73,700; Target 60,000; Gap 13,700 | Claude Code, verifier |
-| D3 | Default filters, detail on | 21 bars in this order: Base; CHP shutdown (2021), Energy Attribute Certificates (2022), Electric Boiler (2023), Photovoltaics (2024), Up/Downsizing (2020–2025), Energy Efficiency (2020–2025); Actual; Green Tariffs (2026), Green Tariffs (2027), Electric Boiler (2027), Green Tariffs (2028), Energy Attribute Certificates (2028), Green Tariffs (2029), Photovoltaics (2029), Electrification Furnace (2029), Heat Pump (2029), Green Tariffs (2030), Energy Efficiency (2026–2030); Gap; Target | Claude Code, verifier |
-| D4 | Default filters, detail on | "Up/Downsizing (2020–2025)" = −7,000; "Energy Efficiency (2020–2025)" = −3,000; "Energy Efficiency (2026–2030)" = −1,000; "Green Tariffs (2026)" = −2,000; no per-year Up/Downsizing or Energy Efficiency bar; no measure bar in 2020 | Claude Code, verifier |
-| D5 | Default filters, "Show detail for past measures" off | 16 bars; one "Reductions" bar = −22,100 between Base and Actual; Actual still 97,900; planned bars unchanged (incl. Energy Efficiency (2026–2030)) | Claude Code, verifier |
+| D3 | Default filters, detail on | 17 bars in this order: Base; CHP shutdown (2021), Energy Attribute Certificates (2022), Electric Boiler (2023), Photovoltaics (2024), Up/Downsizing (2020–2025), Energy Efficiency (2020–2025); Actual; Electric Boiler (2027), Energy Attribute Certificates (2028), Photovoltaics (2029), Electrification Furnace (2029), Heat Pump (2029), Green Tariffs (2026–2030), Energy Efficiency (2026–2030); Gap; Target | Claude Code, verifier |
+| D4 | Default filters, detail on | "Up/Downsizing (2020–2025)" = −7,000; "Energy Efficiency (2020–2025)" = −3,000; "Green Tariffs (2026–2030)" = −10,000; "Energy Efficiency (2026–2030)" = −1,000; no per-year Up/Downsizing, Energy Efficiency or Green Tariffs bar; no measure bar in 2020 | Claude Code, verifier |
+| D5 | Default filters, "Show detail for past measures" off | 12 bars; one "Reductions" bar = −22,100 between Base and Actual; Actual still 97,900; planned bars unchanged (incl. Green Tariffs (2026–2030) and Energy Efficiency (2026–2030)) | Claude Code, verifier |
 | D6 | Scope filter: Scope 1 only | Base 70,000; Actual 56,900; after planned 47,700; Target 35,000; Gap 12,700 | Claude Code, verifier |
 | D7 | Scope filter: Scope 2 only | Base 50,000; Actual 41,000; after planned 26,000; Target 25,000; Gap 1,000 | Claude Code, verifier |
 | D8 | Business filter: Stores only | Base 35,000; Actual 34,000; after planned 19,000; Target 17,500; Gap 1,500 | Claude Code, verifier |
@@ -404,10 +404,10 @@ The Project Governor writes this section out as `docs/checks.md`. For this D1 to
 | S2 | Roadmap — colours | Default view: Base/Actual grey, Target black, done measures darker green, planned measures lighter green, Gap pink. Done vs. planned is clearly distinguishable. | builder |
 | S3 | Roadmap — toggles | "Show Scope 1, 2, 3" stacks every bar by scope, and "Show Business" stacks every bar by business, each with its legend. Switching one on switches the other off. Planned segments are lighter than done segments. | builder |
 | S4 | Roadmap — collapse | Switching "Show detail for past measures" off replaces all done bars with one "Reductions" bar; switching it on restores them. | builder |
-| S5 | Roadmap — tooltip | Hovering a bar shows name, year, value and status. A Green Tariffs piece shows "part of … spread over 5 years"; a span column shows "… total over n years". In stacked mode the tooltip shows segment values. | builder |
+| S5 | Roadmap — tooltip | Hovering a bar shows name, year (or span), value and status. A span column (e.g. Green Tariffs (2026–2030)) shows "… total over 5 years". The Target tooltip shows the chosen % vs. base year. In stacked mode the tooltip shows segment values. | builder |
 | S6 | Roadmap — phone | At phone width (≈375 px) filters, slider and toggles wrap, the slider can be moved by touch, the chart scrolls horizontally inside its frame and the page has no sideways scroll. | builder, verifier |
 | S7 | Roadmap — target slider | The slider starts at −50 %. Moving it to −30 % makes the Target bar taller, the Gap turns into "Target reached", and the subtitle and summary show −30 %; moving it to −70 % makes the Gap bar larger. The arrow keys move it in 1 % steps. A page reload returns it to −50 %. | builder, verifier |
-| S8 | Roadmap — span columns | "Up/Downsizing (2020–2025)" and "Energy Efficiency (2020–2025)" each appear as ONE column directly before Actual; "Energy Efficiency (2026–2030)" as one column directly before Gap; Green Tariffs still shows one bar per year 2026–2030; the year band under a span column reads its span. | builder, verifier |
+| S8 | Roadmap — span columns | "Up/Downsizing (2020–2025)" and "Energy Efficiency (2020–2025)" each appear as ONE column directly before Actual; "Green Tariffs (2026–2030)" and "Energy Efficiency (2026–2030)" each as one column directly before Gap; no per-year Green Tariffs bars; the year band under the span columns reads their span. | builder, verifier |
 
 **Refusal checks**
 
@@ -459,7 +459,7 @@ Bump the version whenever the spec changes (the change lane). v1.x for an additi
 | Version | Date | What changed in the tool |
 |---------|------|--------------------------|
 | v1.0 | 20 November 2026 | Initial build |
-| v1.2 | 20 November 2026 | Updated Excel (Base Scope 2 Manufacturing 20,000; EAC 2022 −9,000; "Efficiency measures" renamed "Energy Efficiency"); Up/Downsizing and Energy Efficiency shown as one column per time span (absorbs the agreed v1.1 change); target slider 0 to −99 % (default −50 %) recalculating Target, Gap and summary; display in kt CO2 written into the spec |
+| v1.2 | 20 November 2026 | Updated Excel (Base Scope 2 Manufacturing 20,000; EAC 2022 −9,000; "Efficiency measures" renamed "Energy Efficiency"); Up/Downsizing, Energy Efficiency and Green Tariffs shown as one column per time span (absorbs the agreed v1.1 change); target slider 0 to −99 % (default −50 %) recalculating Target, Gap and summary; display in kt CO2 written into the spec |
 
 ---
 

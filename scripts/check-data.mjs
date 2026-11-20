@@ -20,7 +20,7 @@ const s2m = base.find((r) => r.scope === 2 && r.business === 'Manufacturing');
 check('D1', base.length === 4 && base.reduce((a, r) => a + r.value, 0) === 120000 && s2m.value === 20000 && meas.length === 14
   && !data.rows.some((r) => r.name === 'Efficiency measures') && meas.filter((r) => r.name === 'Energy Efficiency').length === 2
   && eac22.value === -9000 && !data.rows.some((r) => ['Actual', 'Gap', 'Target'].includes(r.name))
-  && data.settings.targetReduction === 0.5 && JSON.stringify(data.settings.singleColumnMeasures) === '["Up/Downsizing","Energy Efficiency"]',
+  && data.settings.targetReduction === 0.5 && JSON.stringify(data.settings.singleColumnMeasures) === '["Up/Downsizing","Energy Efficiency","Green Tariffs"]',
   `${base.length} base (${base.reduce((a, r) => a + r.value, 0)}), ${meas.length} measures, EAC 2022 ${eac22.value}, settings ${JSON.stringify(data.settings)}`);
 
 // D2
@@ -28,24 +28,23 @@ let r = run({});
 check('D2', s(r) === '120000/97900/73700/60000/13700', s(r));
 // D3
 const expected = ['Base year 2020', 'CHP shutdown (2021)', 'Energy Attribute Certificates (2022)', 'Electric Boiler (2023)', 'Photovoltaics (2024)',
-  'Up/Downsizing (2020–2025)', 'Energy Efficiency (2020–2025)', 'Actual 2025', 'Green Tariffs (2026)', 'Green Tariffs (2027)', 'Electric Boiler (2027)',
-  'Green Tariffs (2028)', 'Energy Attribute Certificates (2028)', 'Green Tariffs (2029)', 'Photovoltaics (2029)', 'Electrification Furnace (2029)',
-  'Heat Pump (2029)', 'Green Tariffs (2030)', 'Energy Efficiency (2026–2030)', 'Gap', 'Target 2030'];
+  'Up/Downsizing (2020–2025)', 'Energy Efficiency (2020–2025)', 'Actual 2025', 'Electric Boiler (2027)', 'Energy Attribute Certificates (2028)',
+  'Photovoltaics (2029)', 'Electrification Furnace (2029)', 'Heat Pump (2029)', 'Green Tariffs (2026–2030)', 'Energy Efficiency (2026–2030)', 'Gap', 'Target 2030'];
 const labels = r.bars.map((b) => b.label);
 check('D3', JSON.stringify(labels) === JSON.stringify(expected), `${labels.length} bars: ${labels.join(' | ')}`);
 // D4
 const v = (l) => r0(bar(r, l)?.total ?? NaN);
 check('D4', v('Up/Downsizing (2020–2025)') === -7000 && v('Energy Efficiency (2020–2025)') === -3000 && v('Energy Efficiency (2026–2030)') === -1000
-  && v('Green Tariffs (2026)') === -2000
-  && !r.bars.some((b) => /^(Up\/Downsizing|Energy Efficiency) \(\d{4}\)$/.test(b.label))
+  && v('Green Tariffs (2026–2030)') === -10000
+  && !r.bars.some((b) => /^(Up\/Downsizing|Energy Efficiency|Green Tariffs) \(\d{4}\)$/.test(b.label))
   && !r.bars.some((b) => (b.kind === 'done' || b.kind === 'planned') && b.year === 2020),
-  ['Up/Downsizing (2020–2025)', 'Energy Efficiency (2020–2025)', 'Energy Efficiency (2026–2030)', 'Green Tariffs (2026)'].map(v).join(', '));
+  ['Up/Downsizing (2020–2025)', 'Energy Efficiency (2020–2025)', 'Green Tariffs (2026–2030)', 'Energy Efficiency (2026–2030)'].map(v).join(', '));
 // D5
 r = run({ detailPast: false });
 const red = bar(r, 'Reductions');
 const iRed = r.bars.indexOf(red);
-check('D5', r.bars.length === 16 && red && r0(red.total) === -22100 && r.bars[iRed - 1].kind === 'base' && r.bars[iRed + 1].kind === 'actual'
-  && r0(r.summary.actual) === 97900 && bar(r, 'Energy Efficiency (2026–2030)') && r.bars.filter((b) => b.kind === 'planned').length === 11,
+check('D5', r.bars.length === 12 && red && r0(red.total) === -22100 && r.bars[iRed - 1].kind === 'base' && r.bars[iRed + 1].kind === 'actual'
+  && r0(r.summary.actual) === 97900 && bar(r, 'Energy Efficiency (2026–2030)') && bar(r, 'Green Tariffs (2026–2030)') && r.bars.filter((b) => b.kind === 'planned').length === 7,
   `${r.bars.length} bars, Reductions ${red && r0(red.total)}`);
 // D6–D8
 r = run({ scopes: [1] }); check('D6', s(r) === '70000/56900/47700/35000/12700', s(r));
